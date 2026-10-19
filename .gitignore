@@ -1,0 +1,7 @@
+# Source images kept only on this computer (the website uses tiles/)
+final_map.png
+repository/
+
+# Local tooling
+.claude/
+__pycache__/
