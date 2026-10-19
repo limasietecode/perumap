@@ -20,6 +20,12 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     handler = functools.partial(NoCacheHandler, directory=ROOT)
-    with http.server.ThreadingHTTPServer(("127.0.0.1", PORT), handler) as httpd:
-        print(f"Mapa de Proyectos: http://localhost:{PORT}  (Ctrl+C para detener)", flush=True)
+    try:
+        httpd = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), handler)
+    except OSError:
+        print(f"El puerto {PORT} ya esta en uso: probablemente el mapa ya esta abierto en otra ventana.")
+        print(f"Abre http://localhost:{PORT} en el navegador, o cierra la otra ventana y vuelve a intentar.")
+        sys.exit(1)
+    with httpd:
+        print(f"Mapa de Proyectos: http://localhost:{PORT}  (cierra esta ventana para detenerlo)", flush=True)
         httpd.serve_forever()
